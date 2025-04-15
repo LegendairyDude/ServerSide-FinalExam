@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Sign Up</h1>
+
+        <% if (errors && errors.length> 0) { %>
+            <ul class="error-list">
+                <% errors.forEach(err=> { %>
+                    <li class="error">
+                        <%= err.msg %>
+                    </li>
+                    <% }); %>
+            </ul>
+            <% } %>
+
+                <form action="/auth/sign-up" method="POST" class="auth-form">
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input name="first_name" class="form-control" type="text" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <input name="last_name" class="form-control" type="text" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input name="email" class="form-control" type="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input name="password" class="form-control" type="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <input name="confirmPassword" class="form-control" type="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Special Member Name (optional)</label>
+                        <input name="special_member_name" class="form-control" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label>Non‑Member Display Name</label>
+                        <input name="non_member_display_name" class="form-control" type="text" required>
+                    </div>
+                    <button class="btn" type="submit">Sign Up</button>
+                </form>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Create a New Message</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Create a New Message</h1>
+
+        <% if (user) { %>
+            <form action="/messages/new" method="POST" class="message-form">
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input id="title" name="title" class="form-control" type="text" required>
+                </div>
+                <div class="form-group">
+                    <label for="content">Message</label>
+                    <textarea id="content" name="content" class="form-control" required></textarea>
+                </div>
+                <button class="btn" type="submit">Post Message</button>
+            </form>
+            <% } else { %>
+                <p>You must be <a href="/auth/sign-in">signed in</a> to post.</p>
+                <% } %>
+
+                    <hr>
+
+                    <h2>Message Feed</h2>
+                    <% if (messages && messages.length> 0) { %>
+                        <% messages.forEach(function(message) { %>
+                            <div class="message-post">
+                                <h3>
+                                    <%= message.title %>
+                                </h3>
+                                <p>
+                                    <%= message.content %>
+                                </p>
+                                <% if (user) { %>
+                                    <small>
+                                        Posted by:
+                                        <% if (user.membership_status || user.admin) { %>
+                                            <%= message.special_member_name || message.non_member_display_name %>
+                                                on <%= new Date(message.created_at).toLocaleString() %>
+                                                    <% } else { %>
+                                                        <%= message.non_member_display_name %>
+                                                            <% } %>
+                                    </small>
+                                    <% if (user.admin) { %>
+                                        <form action="/messages/<%= message.id %>/delete" method="POST"
+                                            class="inline-form" onsubmit="return confirm('Delete this message?');">
+                                            <button class="btn">Delete</button>
+                                        </form>
+                                        <% } %>
+                                            <% } %>
+                            </div>
+                            <% }); %>
+                                <% } else { %>
+                                    <p>No messages found.</p>
+                                    <% } %>
+
+                                        <p><a href="/">Back to Home</a></p>
+    </div>
+</body>
+
+</html>

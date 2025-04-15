@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Private Club Message Feed</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Welcome to the Private Club</h1>
+
+        <% if (user) { %>
+            <p>Hello, <%= user.first_name %>!</p>
+            <p>
+                <a href="/messages/new">Create a New Message</a>
+                <% if (!user.membership_status) { %> | <a href="/secret">Answer Secret</a>
+                    <% } %>
+                        | <a href="/auth/log-out">Log Out</a>
+            </p>
+            <% } else { %>
+                <p><a href="/auth/sign-in">Sign In</a> | <a href="/auth/sign-up">Sign Up</a></p>
+                <% } %>
+
+                    <h2>Message Feed</h2>
+                    <% if (messages && messages.length> 0) { %>
+                        <% messages.forEach(function(message) { %>
+                            <div class="message-post">
+                                <h3>
+                                    <%= message.title %>
+                                </h3>
+                                <p>
+                                    <%= message.content %>
+                                </p>
+                                <% if (user) { %>
+                                    <small>
+                                        Posted by:
+                                        <% if (user.membership_status || user.admin) { %>
+                                            <%= message.special_member_name || message.non_member_display_name %>
+                                                on <%= new Date(message.created_at).toLocaleString() %>
+                                                    <% } else { %>
+                                                        <%= message.non_member_display_name %>
+                                                            <% } %>
+                                    </small>
+                                    <% if (user.admin) { %>
+                                        <form action="/messages/<%= message.id %>/delete" method="POST"
+                                            class="inline-form" onsubmit="return confirm('Delete this message?');">
+                                            <button class="btn">Delete</button>
+                                        </form>
+                                        <% } %>
+                                            <% } %>
+                            </div>
+                            <% }); %>
+                                <% } else { %>
+                                    <p>No messages found.</p>
+                                    <% } %>
+    </div>
+</body>
+
+</html>
